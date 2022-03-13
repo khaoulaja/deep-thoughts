@@ -31,13 +31,18 @@ const ThoughtForm = () => {
             } catch ( e ){
                 console.error(e);
             }
-            
-            // update me object's cache, appending new thought to the end of the array
-            const { me } = cache.readQuery({ query: QUERY_ME });
-            cache.writeQuery({
-            query: QUERY_ME,
-            data: { me: { ...me, thoughts: [...me.thoughts, addThought] } }
-            });   
+           
+            try{
+
+                // update me object's cache, appending new thought to the end of the array
+                const { me } = cache.readQuery({ query: QUERY_ME });
+                cache.writeQuery({
+                    query: QUERY_ME,
+                    data: { me: { ...me, thoughts: [...me.thoughts, addThought] } }
+                });   
+            } catch (e){
+                console.error(e);
+            }
         }
     });
     
