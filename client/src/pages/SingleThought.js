@@ -3,15 +3,19 @@ import React from 'react';
 import { useParams } from 'react-router';
 import ReactionList from '../components/ReactionList';
 import { QUERY_THOUGHT } from '../utils/queries';
+import ReactionForm from '../components/ReactionForm';
+import Auth from '../utils/auth';
+
 
 const SingleThought = props => {
   const {id: thoughtId} = useParams();
   const {loading, data} = useQuery(QUERY_THOUGHT, {variables: {id: thoughtId}});
   const thought = data?.thought || {};
+
   if(loading){
     return (<div>Loading...</div>)
   }
-  console.log(thought.thoughtText);
+
   return (
     <div>
       <div className="card mb-3">
@@ -26,6 +30,7 @@ const SingleThought = props => {
         </div>
       </div>
       {thought.reactionCount >0 && <ReactionList reactions={thought.reactions}/>}
+      {Auth.loggedIn() && <ReactionForm thoughtId={thought._id} />}
     </div>
   );
 };
